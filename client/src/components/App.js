@@ -15,7 +15,7 @@ class App extends Component {
   }
   render() {
     return (
-      <div style={{ backgroundColor: '#dddddd', height: '100vh' }}>
+      <div style={{ backgroundColor: '#F7EBE8', height: '100vh' }}>
         <BrowserRouter>
           <div>
             <Header />
