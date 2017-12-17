@@ -20,6 +20,13 @@ class Header extends Component {
         return [
           <Payments key={'stripe'} />,
           <a
+            key={'credits'}
+            className="button is-info"
+            style={{ marginLeft: '10px', cursor: 'default' }}
+          >
+            Credits: {this.props.auth.credits}
+          </a>,
+          <a
             key={'login-logout'}
             className="button is-info is-outlined"
             style={{ marginLeft: '10px' }}
