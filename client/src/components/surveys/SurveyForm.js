@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { reduxForm, Field } from 'redux-form'
 import SurveyField from './SurveyField'
+
+import validateEmails from '../../utils/validateEmails'
 
 const FIELDS = [
   { label: 'Survey Title', name: 'title' },
@@ -11,11 +14,12 @@ const FIELDS = [
 
 class SuveyForm extends Component {
   renderFields = () =>
-    FIELDS.map(field => (
+    FIELDS.map(({ name, label }) => (
       <Field
+        key={name}
         type="text"
-        name={field.name}
-        label={field.label}
+        name={name}
+        label={label}
         component={SurveyField}
       />
     ))
@@ -25,13 +29,30 @@ class SuveyForm extends Component {
       <div>
         <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
           {this.renderFields()}
-          <button type="submit">Submit</button>
+          <Link to="/surveys">Cancel</Link>
+          <button type="submit">Next</button>
         </form>
       </div>
     )
   }
 }
 
+function validate(values) {
+  console.log('validate - emails', values)
+  const errors = {}
+
+  errors.emails = validateEmails(values.emails || '')
+
+  FIELDS.forEach(({ name }) => {
+    if (!values[name]) {
+      errors[name] = 'You must provide a value'
+    }
+  })
+
+  return errors
+}
+
 export default reduxForm({
+  validate,
   form: 'surveyForm'
 })(SuveyForm)
