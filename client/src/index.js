@@ -7,6 +7,9 @@ import reduxThunk from 'redux-thunk'
 import App from './components/App'
 import reducers from './reducers'
 
+// Import style
+import 'semantic-ui-css/semantic.min.css'
+
 // axios window for dev
 import axios from 'axios'
 window.axios = axios

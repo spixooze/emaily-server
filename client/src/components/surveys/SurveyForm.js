@@ -2,19 +2,17 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { reduxForm, Field } from 'redux-form'
 import SurveyField from './SurveyField'
+import styled from 'styled-components'
+import { Button, Form } from 'semantic-ui-react'
 
 import validateEmails from '../../utils/validateEmails'
 
-const FIELDS = [
-  { label: 'Survey Title', name: 'title' },
-  { label: 'Subject Line', name: 'subject' },
-  { label: 'Email Body', name: 'body' },
-  { label: 'Recipient List', name: 'emails' }
-]
+import formFields from './formFields'
+import { Container, FlexGroup } from '../styled'
 
 class SuveyForm extends Component {
   renderFields = () =>
-    FIELDS.map(({ name, label }) => (
+    formFields.map(({ name, label }) => (
       <Field
         key={name}
         type="text"
@@ -26,13 +24,17 @@ class SuveyForm extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
+      <Container>
+        <Form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
           {this.renderFields()}
-          <Link to="/surveys">Cancel</Link>
-          <button type="submit">Next</button>
-        </form>
-      </div>
+          <FlexGroup>
+            <Link to="/surveys">
+              <Button>Cancel</Button>
+            </Link>
+            <Button type="submit">Next</Button>
+          </FlexGroup>
+        </Form>
+      </Container>
     )
   }
 }
@@ -41,9 +43,9 @@ function validate(values) {
   console.log('validate - emails', values)
   const errors = {}
 
-  errors.emails = validateEmails(values.emails || '')
+  errors.recipients = validateEmails(values.recipients || '')
 
-  FIELDS.forEach(({ name }) => {
+  formFields.forEach(({ name }) => {
     if (!values[name]) {
       errors[name] = 'You must provide a value'
     }
@@ -54,5 +56,6 @@ function validate(values) {
 
 export default reduxForm({
   validate,
-  form: 'surveyForm'
+  form: 'surveyForm',
+  destroyOnUnmount: false
 })(SuveyForm)

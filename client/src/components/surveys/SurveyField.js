@@ -1,11 +1,12 @@
 import React from 'react'
+import { Form, Label } from 'semantic-ui-react'
 
 export default ({ input, label, meta: { error, touched } }) => {
   return (
-    <div>
+    <Form.Field>
       <label>{label}</label>
       <input {...input} />
-      <div style={{ color: 'red' }}>{touched && error ? error : null}</div>
-    </div>
+      {touched && error ? <Label pointing>{error}</Label> : null}
+    </Form.Field>
   )
 }
